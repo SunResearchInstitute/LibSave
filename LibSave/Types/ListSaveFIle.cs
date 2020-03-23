@@ -26,6 +26,8 @@ namespace LibSave.Types
 
         public override void CleanUp(ulong id) => _cleanupAction?.Invoke(id, _data);
 
+        public void Set(List<T> newList) => _data = newList;
+
         public T this[int index] { get => _data[index]; set => _data[index] = value; }
         object IList.this[int index] { get => _data[index]; set => _data[index] = (T)value; }
 

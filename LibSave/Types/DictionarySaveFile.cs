@@ -27,6 +27,8 @@ namespace LibSave.Types
 
         public override void CleanUp(ulong id) => _cleanupAction?.Invoke(id, _data);
 
+        public void Set(Dictionary<T, K> newDictionary) => _data = newDictionary;
+
         public K this[T key] { get => _data[key]; set => _data[key] = value; }
         public object this[object key] { get => _data[(T)key]; set => _data[(T)key] = (K)value; }
 
