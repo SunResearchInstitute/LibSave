@@ -18,7 +18,7 @@ namespace LibSave.Types
         public ListSaveFile(string name) : base(name)
         {
             if (typeof(T) != typeof(ulong))
-                throw new Exception("Default constructor should only be used for ulong");
+                throw new Exception("Default constructor should only be used for ulong and being used for discord guilds.");
 
             _cleanupAction = delegate (ulong guild, List<T> items) { (items as List<ulong>).Remove(guild); };
         }

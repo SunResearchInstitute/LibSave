@@ -19,7 +19,7 @@ namespace LibSave.Types
         public DictionarySaveFile(string name) : base(name)
         {
             if (typeof(T) != typeof(ulong))
-                throw new Exception("Default constructor should only be used if T is ulong");
+                throw new Exception("Default constructor should only be used if T is ulong and being used for discord guilds.");
 
             _cleanupAction = delegate (ulong guild, Dictionary<T, K> dictionary) { (dictionary as Dictionary<ulong, K>).Remove(guild); };
         }
