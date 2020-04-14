@@ -7,7 +7,7 @@ using System.Threading;
 namespace LibSave.Types
 {
     //Follow normal list specs
-    public class ListSaveFile<T> : SaveFile<List<T>>, ICollection<T>, IEnumerable<T>, IEnumerable, IList<T>, IReadOnlyCollection<T>, IReadOnlyList<T>, ICollection, IList
+    public class ListSaveFile<T> : SaveFile<List<T>>, IList<T>, IReadOnlyList<T>, IList
     {
         [NonSerialized]
         private readonly Action<ulong, List<T>> _cleanupAction;
@@ -57,14 +57,7 @@ namespace LibSave.Types
             if (value == null && !(default(T) == null))
                 throw new ArgumentNullException();
 
-            try
-            {
-                Add((T)value);
-            }
-            catch (InvalidCastException exception)
-            {
-                throw exception;
-            }
+            Add((T)value);
 
             return Count - 1;
         }
@@ -84,15 +77,8 @@ namespace LibSave.Types
 
             Contract.EndContractBlock();
 
-            try
-            {
-                // Array.Copy will check for NULL.
-                Array.Copy(_data.ToArray(), 0, array, index, _data.Count);
-            }
-            catch (ArrayTypeMismatchException exception)
-            {
-                throw exception;
-            }
+            // Array.Copy will check for NULL.
+            Array.Copy(_data.ToArray(), 0, array, index, _data.Count);
         }
 
         public IEnumerator<T> GetEnumerator() => _data.GetEnumerator();
