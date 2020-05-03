@@ -20,7 +20,11 @@ namespace LibSave.Types
             if (typeof(T) != typeof(ulong))
                 throw new Exception("Default constructor should only be used for ulong and being used for discord guilds.");
 
-            _cleanupAction = delegate (ulong guild, List<T> items) { (items as List<ulong>).Remove(guild); };
+            _cleanupAction = delegate (ulong guild, List<T> items)
+            {
+                if ((items as List<ulong>).Remove(guild))
+                    Console.WriteLine($"Removed {guild}!");
+            };
         }
         public ListSaveFile(string name, Action<ulong, List<T>> cleanUp) : base(name) => _cleanupAction = cleanUp;
 
@@ -54,7 +58,7 @@ namespace LibSave.Types
 
         public int Add(object value)
         {
-            if (value == null && !(default(T) == null))
+            if (value == null && default(T) != null)
                 throw new ArgumentNullException();
 
             Add((T)value);
