@@ -2,10 +2,13 @@
 
 namespace LibSave
 {
+    // ReSharper disable once InconsistentNaming
     public abstract class ISaveFile
     {
-        public static DirectoryInfo SaveDirectory = new DirectoryInfo("Save");
+        // ReSharper disable once MemberCanBeProtected.Global
+        public static readonly DirectoryInfo SaveDirectory = new DirectoryInfo("Save");
 
+        // ReSharper disable once MemberCanBeProtected.Global
         public FileInfo FileInfo;
 
         static ISaveFile()

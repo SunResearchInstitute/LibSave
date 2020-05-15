@@ -9,7 +9,7 @@ using System.Threading;
 namespace LibSave.Types
 {
     //Follow normal dictionary specs
-    public class DictionarySaveFile<T, TK> : SaveFile<Dictionary<T, TK>>, IDictionary<T, TK>, IReadOnlyDictionary<T, TK>, IDictionary, IDeserializationCallback, ISerializable where T : notnull
+    public class DictionarySaveFile<T, TK> : SaveFile<Dictionary<T, TK>>, IDictionary<T, TK> where T : notnull
     {
         [NonSerialized]
         private object _syncRoot;
@@ -25,18 +25,18 @@ namespace LibSave.Types
         }
         public DictionarySaveFile(string name, Action<ulong, Dictionary<T, TK>> cleanUp) : base(name) => _cleanupAction = cleanUp;
 
-        public override void CleanUp(ulong id) => _cleanupAction?.Invoke(id, _data);
+        public override void CleanUp(ulong id) => _cleanupAction?.Invoke(id, Data);
 
-        public void Set(Dictionary<T, TK> newDictionary) => _data = newDictionary;
+        public void Set(Dictionary<T, TK> newDictionary) => Data = newDictionary;
 
-        public TK this[T key] { get => _data[key]; set => _data[key] = value; }
-        public object this[object key] { get => _data[(T)key]; set => _data[(T)key] = (TK)value; }
+        public TK this[T key] { get => Data[key]; set => Data[key] = value; }
+        public object this[object key] { get => Data[(T)key]; set => Data[(T)key] = (TK)value; }
 
-        public ICollection<T> Keys => _data.Keys;
+        public ICollection<T> Keys => Data.Keys;
 
-        public ICollection<TK> Values => _data.Values;
+        public ICollection<TK> Values => Data.Values;
 
-        public int Count => _data.Count;
+        public int Count => Data.Count;
 
         public bool IsReadOnly => false;
 
@@ -54,40 +54,29 @@ namespace LibSave.Types
                 return _syncRoot;
             }
         }
+        public void Add(T key, TK value) => Data.Add(key, value);
 
-        IEnumerable<T> IReadOnlyDictionary<T, TK>.Keys => _data.Keys;
+        public void Add(KeyValuePair<T, TK> item) => Data.Add(item.Key, item.Value);
 
-        ICollection IDictionary.Keys => _data.Keys;
+        public void Add(object key, object value) => Data.Add((T)key, (TK)value);
 
-        IEnumerable<TK> IReadOnlyDictionary<T, TK>.Values => _data.Values;
+        public void Clear() => Data.Clear();
 
-        ICollection IDictionary.Values => _data.Values;
+        public bool Contains(KeyValuePair<T, TK> item) => Data.ContainsKey(item.Key) && Data.ContainsValue(item.Value);
 
-        public void Add(T key, TK value) => _data.Add(key, value);
+        public bool Contains(object key) => Data.ContainsKey((T)key);
 
-        public void Add(KeyValuePair<T, TK> item) => _data.Add(item.Key, item.Value);
+        public bool ContainsKey(T key) => Data.ContainsKey(key);
 
-        public void Add(object key, object value) => _data.Add((T)key, (TK)value);
+        public void CopyTo(KeyValuePair<T, TK>[] array, int arrayIndex) => Data.ToArray().CopyTo(array, arrayIndex);
 
-        public void Clear() => _data.Clear();
+        public IEnumerator<KeyValuePair<T, TK>> GetEnumerator() => Data.GetEnumerator();
 
-        public bool Contains(KeyValuePair<T, TK> item) => _data.ContainsKey(item.Key) && _data.ContainsValue(item.Value);
+        public void GetObjectData(SerializationInfo info, StreamingContext context) => Data.GetObjectData(info, context);
 
-        public bool Contains(object key) => _data.ContainsKey((T)key);
+        public void OnDeserialization(object sender) => Data.OnDeserialization(sender);
 
-        public bool ContainsKey(T key) => _data.ContainsKey(key);
-
-        public void CopyTo(KeyValuePair<T, TK>[] array, int arrayIndex) => _data.ToArray().CopyTo(array, arrayIndex);
-
-        public void CopyTo(Array array, int index) => throw new NotImplementedException();
-
-        public IEnumerator<KeyValuePair<T, TK>> GetEnumerator() => _data.GetEnumerator();
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context) => _data.GetObjectData(info, context);
-
-        public void OnDeserialization(object sender) => _data.OnDeserialization(sender);
-
-        public bool Remove(T key) => _data.Remove(key);
+        public bool Remove(T key) => Data.Remove(key);
 
         // ReSharper disable once UseDeconstructionOnParameter
         public bool Remove(KeyValuePair<T, TK> item)
@@ -95,18 +84,16 @@ namespace LibSave.Types
             if (item.Equals(null))
                 return false;
 
-            if (_data.ContainsKey(item.Key) && _data[item.Key].Equals(item.Value))
-                return _data.Remove(item.Key);
+            if (Data.ContainsKey(item.Key) && Data[item.Key].Equals(item.Value))
+                return Data.Remove(item.Key);
 
             return false;
         }
 
-        public void Remove(object key) => _data.Remove((T)key);
+        public void Remove(object key) => Data.Remove((T)key);
 
-        public bool TryGetValue(T key, [MaybeNullWhen(false)] out TK value) => _data.TryGetValue(key, out value);
+        public bool TryGetValue(T key, [MaybeNullWhen(false)] out TK value) => Data.TryGetValue(key, out value);
 
-        IEnumerator IEnumerable.GetEnumerator() => _data.GetEnumerator();
-
-        IDictionaryEnumerator IDictionary.GetEnumerator() => _data.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => Data.GetEnumerator();
     }
 }

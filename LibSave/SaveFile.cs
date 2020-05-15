@@ -4,14 +4,14 @@ namespace LibSave
 {
     public abstract class SaveFile<T> : ISaveFile where T : new()
     {
-        protected T _data;
+        protected T Data;
 
-        public SaveFile(string name)
+        protected SaveFile(string name)
         {
             FileInfo = SaveDirectory.GetFile(name);
-            _data = FileInfo.Exists ? JsonConvert.DeserializeObject<T>(FileInfo.ReadAllText()) : new T();
+            Data = FileInfo.Exists ? JsonConvert.DeserializeObject<T>(FileInfo.ReadAllText()) : new T();
         }
 
-        public override void Write() => FileInfo.WriteAllText(JsonConvert.SerializeObject(_data, Formatting.Indented));
+        public override void Write() => FileInfo.WriteAllText(JsonConvert.SerializeObject(Data, Formatting.Indented));
     }
 }
