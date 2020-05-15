@@ -79,50 +79,7 @@ namespace LibSave.Types
 
         public void CopyTo(KeyValuePair<T, TK>[] array, int arrayIndex) => _data.ToArray().CopyTo(array, arrayIndex);
 
-        public void CopyTo(Array array, int index)
-        {
-            if (array == null)
-            {
-                throw new ArgumentException();
-            }
-
-            if (array.Rank != 1)
-            {
-                throw new RankException();
-            }
-
-            if (array.GetLowerBound(0) != 0)
-            {
-                //??
-                throw new Exception();
-            }
-
-            if (index < 0 || index > array.Length)
-            {
-                throw new IndexOutOfRangeException();
-            }
-
-            if (array.Length - index < _data.Count)
-            {
-                throw new Exception();
-            }
-
-            if (array is T[] keys)
-            {
-                CopyTo(keys, index);
-            }
-            else
-            {
-                if (!(array is object[] objects))
-                {
-                    throw new Exception();
-                }
-
-                int count = _data.Count;
-                for (int i = 0; i < count; i++)
-                    if (_data.ElementAt(i).GetHashCode() >= 0) objects[index++] = _data.ElementAt(i).Key;
-            }
-        }
+        public void CopyTo(Array array, int index) => throw new NotImplementedException();
 
         public IEnumerator<KeyValuePair<T, TK>> GetEnumerator() => _data.GetEnumerator();
 
@@ -132,7 +89,17 @@ namespace LibSave.Types
 
         public bool Remove(T key) => _data.Remove(key);
 
-        public bool Remove(KeyValuePair<T, TK> item) => _data.Remove(item.Key);
+        // ReSharper disable once UseDeconstructionOnParameter
+        public bool Remove(KeyValuePair<T, TK> item)
+        {
+            if (item.Equals(null))
+                return false;
+
+            if (_data.ContainsKey(item.Key) && _data[item.Key].Equals(item.Value))
+                return _data.Remove(item.Key);
+
+            return false;
+        }
 
         public void Remove(object key) => _data.Remove((T)key);
 
