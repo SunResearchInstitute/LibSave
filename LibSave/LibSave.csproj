@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RepositoryUrl>https://github.com/Sun-Research-University/LibSave</RepositoryUrl>
+    <Version>1.0.1</Version>
+    <Authors>Sun Research University</Authors>
+    <Product />
   </PropertyGroup>
 
   <ItemGroup>
