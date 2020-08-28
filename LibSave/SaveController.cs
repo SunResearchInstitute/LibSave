@@ -50,7 +50,7 @@ namespace LibSave
                 ClearSaveFiles();
         }
 
-        public Task SaveAllAsync(bool clean = false) => Task.Run(() => SaveAll(clean));
+        public async Task SaveAllAsync(bool clean = false) => await Task.Run(() => SaveAll(clean));
 
         public void ReloadAll()
         {
@@ -70,6 +70,8 @@ namespace LibSave
         }
 
         public bool RemoveSave(string saveName) => SaveFiles.Remove(saveName);
+
+        public async Task<bool> RemoveSaveAsync(string saveName) => await Task.Run(() => RemoveSave(saveName));
 
         public FileInfo GetSaveFilePath(string saveName) => SavePath.GetFile(saveName);
     }

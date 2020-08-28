@@ -15,7 +15,7 @@ namespace LibSave.Types
 
         public override void Write() => FilePath.WriteAllText(JsonConvert.SerializeObject(Data, Formatting.Indented));
 
-        public override Task WriteAsync() => Task.Run(() => Write());
+        public override async Task WriteAsync() => await Task.Run(() => Write());
 
         public override void Reload() => Reload(new T());
 
@@ -28,19 +28,14 @@ namespace LibSave.Types
                 try
                 {
                     Data = JsonConvert.DeserializeObject<T>(FilePath.ReadAllText());
+                    return;
                 }
-                catch
-                {
-                    if (fallbackData == null)
-                    {
-                        Data = new T();
-                    }
-                    else
-                    {
-                        Data = fallbackData;
-                    }
-                }
+                catch { }
             }
+            if (fallbackData == null)
+                Data = new T();
+            else
+                Data = fallbackData;
         }
     }
 }
