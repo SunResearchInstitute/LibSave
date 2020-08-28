@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading;
@@ -13,19 +14,8 @@ namespace LibSave.Types
     {
         [NonSerialized]
         private object _syncRoot;
-        [NonSerialized]
-        private readonly Action<ulong, Dictionary<T, TK>> _cleanupAction;
 
-        public DictionarySaveFile(string name) : base(name)
-        {
-            if (typeof(T) != typeof(ulong))
-                throw new Exception("Default constructor should only be used if T is ulong and being used for discord guilds.");
-
-            _cleanupAction = delegate (ulong guild, Dictionary<T, TK> dictionary) { (dictionary as Dictionary<ulong, TK>).Remove(guild); };
-        }
-        public DictionarySaveFile(string name, Action<ulong, Dictionary<T, TK>> cleanUp) : base(name) => _cleanupAction = cleanUp;
-
-        public override void CleanUp(ulong id) => _cleanupAction?.Invoke(id, Data);
+        public DictionarySaveFile(FileInfo file, Dictionary<T, TK> defaultData = null) : base(file, defaultData) { }
 
         public void Set(Dictionary<T, TK> newDictionary) => Data = newDictionary;
 

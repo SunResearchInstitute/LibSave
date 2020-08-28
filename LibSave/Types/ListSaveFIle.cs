@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Threading;
 
 namespace LibSave.Types
@@ -10,25 +11,10 @@ namespace LibSave.Types
     public class ListSaveFile<T> : SaveFile<List<T>>, IList<T>
     {
         [NonSerialized]
-        private readonly Action<ulong, List<T>> _cleanupAction;
-        [NonSerialized]
         private object _syncRoot;
 
         //Should only be used if list is going to be UlongList
-        public ListSaveFile(string name) : base(name)
-        {
-            if (typeof(T) != typeof(ulong))
-                throw new Exception("Default constructor should only be used for ulong and being used for discord guilds.");
-
-            _cleanupAction = delegate (ulong guild, List<T> items)
-            {
-                if ((items as List<ulong>).Remove(guild))
-                    Console.WriteLine($"Removed {guild}!");
-            };
-        }
-        public ListSaveFile(string name, Action<ulong, List<T>> cleanUp) : base(name) => _cleanupAction = cleanUp;
-
-        public override void CleanUp(ulong id) => _cleanupAction?.Invoke(id, Data);
+        public ListSaveFile(FileInfo filePath, List<T> defaultData = null) : base(filePath, defaultData) { }
 
         public void Set(List<T> newList) => Data = newList;
 
