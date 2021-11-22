@@ -3,13 +3,28 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RepositoryUrl>https://github.com/Sun-Research-University/LibSave</RepositoryUrl>
-    <Version>1.0.2</Version>
-    <Authors>Sun Research University</Authors>
+    <Version>1.0.3</Version>
+    <Authors>SunResearchInstitute</Authors>
     <Product />
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/SunResearchInstitute/LibSave</PackageProjectUrl>
+    <Copyright>SunResearchInstitute</Copyright>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Quick and somewhat simple savefile library!</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

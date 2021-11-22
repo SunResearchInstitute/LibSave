@@ -22,7 +22,7 @@ namespace LibSave
         {
             if (!SaveFiles.ContainsKey(saveName))
             {
-                DictionarySaveFile<K, V> save = new DictionarySaveFile<K, V>(GetSaveFilePath(saveName), defaultData);
+                DictionarySaveFile<K, V> save = new DictionarySaveFile<K, V>(GetSavePath(saveName), defaultData);
                 SaveFiles.Add(saveName, save);
             }
         }
@@ -31,7 +31,7 @@ namespace LibSave
         {
             if (!SaveFiles.ContainsKey(saveName))
             {
-                ListSaveFile<T> save = new ListSaveFile<T>(GetSaveFilePath(saveName), defaultData);
+                ListSaveFile<T> save = new ListSaveFile<T>(GetSavePath(saveName), defaultData);
                 SaveFiles.Add(saveName, save);
             }
         }
@@ -71,8 +71,6 @@ namespace LibSave
 
         public bool RemoveSave(string saveName) => SaveFiles.Remove(saveName);
 
-        public async Task<bool> RemoveSaveAsync(string saveName) => await Task.Run(() => RemoveSave(saveName));
-
-        public FileInfo GetSaveFilePath(string saveName) => SavePath.GetFile(saveName);
+        public FileInfo GetSavePath(string saveName) => SavePath.GetFile(saveName);
     }
 }
