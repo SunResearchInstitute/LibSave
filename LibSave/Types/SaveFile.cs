@@ -8,7 +8,7 @@ namespace LibSave.Types
     {
         protected T Data;
 
-        protected SaveFile(FileInfo filePath, T defaultData) : base(filePath)
+        protected SaveFile(FileInfo filePath, T defaultData, bool isConfig = false) : base(filePath, isConfig)
         {
             LoadData(defaultData);
         }

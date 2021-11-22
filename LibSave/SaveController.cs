@@ -44,7 +44,10 @@ namespace LibSave
         public void SaveAll(bool clean = false)
         {
             foreach (KeyValuePair<string, ISaveFile> save in SaveFiles)
-                save.Value.Write();
+            {
+                if (!save.Value.isConfig)
+                    save.Value.Write();
+            }
 
             if (clean)
                 ClearSaveFiles();

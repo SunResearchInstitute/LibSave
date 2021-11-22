@@ -7,9 +7,12 @@ namespace LibSave.Types
     {
         public FileInfo FilePath;
 
-        protected ISaveFile(FileInfo filePath)
+        public bool isConfig;
+
+        protected ISaveFile(FileInfo filePath, bool isConfig)
         {
             FilePath = filePath;
+            this.isConfig = isConfig;
         }
 
         public abstract void Write();
