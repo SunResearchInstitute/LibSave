@@ -19,7 +19,7 @@ namespace LibSave.Types
 
         public override void Reload() => Reload(new T());
 
-        public void Reload(T data) => LoadData(data);
+        public void Reload(T fallbackData) => LoadData(fallbackData);
 
         private void LoadData(T fallbackData)
         {
