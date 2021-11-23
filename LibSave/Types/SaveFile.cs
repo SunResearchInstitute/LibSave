@@ -6,7 +6,7 @@ namespace LibSave.Types
 {
     public abstract class SaveFile<T> : ISaveFile where T : new()
     {
-        protected T Data;
+        public T Data { get; protected set; }
 
         protected SaveFile(FileInfo filePath, T defaultData, bool isConfig = false) : base(filePath, isConfig)
         {
