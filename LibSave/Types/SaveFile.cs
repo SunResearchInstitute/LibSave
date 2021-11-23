@@ -11,6 +11,7 @@ namespace LibSave.Types
         protected SaveFile(FileInfo filePath, T defaultData, bool isConfig = false) : base(filePath, isConfig)
         {
             LoadData(defaultData);
+            Write();
         }
 
         public override void Write() => FilePath.WriteAllText(JsonConvert.SerializeObject(Data, Formatting.Indented));
