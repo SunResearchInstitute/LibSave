@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RepositoryUrl>https://github.com/SunResearchInstitute/LibSave</RepositoryUrl>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <Authors>SunResearchInstitute</Authors>
     <Product />
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
